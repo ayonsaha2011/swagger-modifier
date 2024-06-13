@@ -1,20 +1,15 @@
+#!/usr/bin/env node
 const SwaggerParser = require('swagger-parser');
 const { Command } = require('commander');
 const fs = require('fs-extra');
 const path = require('path');
+const pjson = require('./package.json');
 
 
 const program = new Command();
 
-
+program.version(`v${pjson.version}`, '-v, --version');
 program
-    .name('swagger-modifier')
-    .description('Swagger Modifier Tool')
-    .version('1.0.0');
-
-
-program
-    .option('-v, --version <version>', 'Version of the swagger modifier tool')
     .option('-i, --input <inputFilePath>', 'Path to the input Swagger file')
     .option('-o, --output <outputFilePath>', 'Path to the output directory')
     .option('-c, --config <configMapping>', 'Path to the JSON file containing map of' +
@@ -75,11 +70,6 @@ async function modifySwaggerFile(inputFilePath, outputFilePath, configMapping) {
 }
 
 
-if (options.version) {
-    console.log('v', options.version);
-    process.exit(0);
-}
-
 if (!options.input || !options.output || !options.config) {
     console.error('Error: Input file path, output directory, and operation mapping file are required.');
     process.exit(1);
@@ -93,3 +83,5 @@ fs.readJson(options.config)
     .catch(err => {
         console.error('Error reading operation mapping file:', err);
     });
+
+modules.exports = { modifySwaggerFile }

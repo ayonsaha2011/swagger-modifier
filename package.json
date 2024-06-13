@@ -1,7 +1,8 @@
 {
   "name": "swagger-modifier",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
+  "bin": "main.js",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
