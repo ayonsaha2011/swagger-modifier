@@ -1,0 +1,27 @@
+{
+  "name": "swagger-modifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayonsaha2011/swagger-modifier.git"
+  },
+  "keywords": [
+    "#SwaggerModifier"
+  ],
+  "author": "Ayon Saha <ayonsaha2011@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ayonsaha2011/swagger-modifier/issues"
+  },
+  "homepage": "https://github.com/ayonsaha2011/swagger-modifier#readme",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "swagger-parser": "^10.0.3"
+  }
+}
