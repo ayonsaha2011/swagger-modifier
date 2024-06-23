@@ -1,0 +1,9 @@
+{
+    "/shopping/flight-offers/upselling": {
+        "post": {
+            "prefix": "BOSE_",
+            "suffix": "",
+            "inputSuffix": "_Input"
+        }
+    }
+}

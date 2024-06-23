@@ -11,7 +11,7 @@ npm install -g swagger-modifier
 ## Usage
 
 ```bash
-swagger-modifier -i <inputFilePath> -o <outputFilePath> -c <configMapping>
+swagger-modifier -i <inputFilePath> -o <outputFilePath> -c <configMapping> -oc <openApiConfigOutputPath>
 ```
 
 ### Options:
@@ -19,11 +19,12 @@ swagger-modifier -i <inputFilePath> -o <outputFilePath> -c <configMapping>
 -i, --input <inputFilePath>: Path to the input Swagger file.
 -o, --output <outputFilePath>: Path to the output directory.
 -c, --config <configMapping>: Path to the JSON file containing a map of operation IDs to prefixes and suffixes.
+-oc --open-api-config-output-path <openApiConfigOutputPath>: Path to the output OpenAPI name mapping config file
 
 ### Example:
 
 ```bash
-swagger-modifier -i swagger.json -o modified-swagger -c config.json
+swagger-modifier -i swagger.json -o modified-swagger.json -c config.json -oc openAPINameMappingConfig.json
 ```
 
 ### config.json:

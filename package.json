@@ -1,6 +1,6 @@
 {
   "name": "swagger-modifier",
-  "version": "1.0.3",
+  "version": "1.1.7",
   "description": "",
   "bin": "main.js",
   "main": "main.js",
@@ -24,5 +24,6 @@
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
     "swagger-parser": "^10.0.3"
-  }
+  },
+  "packageManager": "pnpm@8.9.0+sha256.8f5264ad1d100da11a6add6bb8a94c6f1e913f9e9261b2a551fabefad2ec0fec"
 }

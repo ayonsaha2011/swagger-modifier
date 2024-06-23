@@ -1,0 +1,4587 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.2.1",
+    "title": "Flight Offers Upsell",
+    "x-tags": [
+      "#quick-connect",
+      "#online-retail",
+      "#mobile-services",
+      "#ama-for-dev"
+    ],
+    "x-status": "validated",
+    "x-release-note": {
+      "1.2.1": [
+        "Change description of lastTicketingDate"
+      ],
+      "1.2.0": [
+        "Add chargeableSeat element"
+      ],
+      "1.1.0": [
+        "Add Margins and Discounts content from Margin Manager product"
+      ],
+      "1.0.0": [
+        "Initial version"
+      ]
+    },
+    "description": "# Introduction\nThe **UpsellBrandedFares** REST/JSON service enables you to get upgraded Branded Fares flight recommendations available from a flight offer.\nBranded Fares are airline offers in which airline bundles its airfares with options and features, such as refundability and miles accrual, or a pre-reserved seat, baggage, and meal.\nIt is usually used after the Flight Offers Search service.\n# Supported Operations\nList of supported operations by resource:\n- POST: to get upgraded airline Branded Fares available."
+  },
+  "host": "test.travel.api.amadeus.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/vnd.amadeus+json"
+  ],
+  "produces": [
+    "application/vnd.amadeus+json"
+  ],
+  "paths": {
+    "/shopping/flight-offers/upselling": {
+      "post": {
+        "tags": [
+          "Shopping"
+        ],
+        "operationId": "upsellAirOffers",
+        "summary": "Return a list of upsell Flight Offers based on given Flight Offers",
+        "parameters": [
+          {
+            "$ref": "#/parameters/BOSE_getOverride_Input"
+          },
+          {
+            "name": "upsellFlightOffersBody",
+            "description": "list of criteria to upsell a dedicated flight-offers",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BOSE_Get_Upsell_Query_Input"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/BOSE_returnUpsell"
+          },
+          "400": {
+            "$ref": "#/responses/BOSE_400_Upsell"
+          },
+          "default": {
+            "$ref": "#/responses/BOSE_500"
+          }
+        },
+        "description": "This operation aims at propose an upsell of flightOffers\n"
+      }
+    }
+  },
+  "definitions": {
+    "BOSE_Success_Upsell": {
+      "title": "Success_Upsell",
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Issue"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/BOSE_Collection_Meta_Upsell"
+        },
+        "data": {
+          "type": "array",
+          "description": "upselled flight Offers",
+          "items": {
+            "$ref": "#/definitions/BOSE_FlightOffer"
+          }
+        },
+        "dictionaries": {
+          "$ref": "#/definitions/BOSE_Dictionaries"
+        }
+      },
+      "example": {
+        "meta": {
+          "count": 5
+        },
+        "data": [
+          {
+            "type": "flight-offer",
+            "id": "2",
+            "source": "GDS",
+            "instantTicketingRequired": false,
+            "paymentCardRequired": false,
+            "lastTicketingDate": "2021-07-04",
+            "itineraries": [
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "CDG",
+                      "terminal": "2F",
+                      "at": "2021-07-04T09:30:00"
+                    },
+                    "arrival": {
+                      "iataCode": "MAD",
+                      "at": "2021-07-04T11:35:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1300",
+                    "aircraft": {
+                      "code": "321"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT2H5M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "MAD",
+                      "terminal": "2",
+                      "at": "2021-07-11T18:35:00"
+                    },
+                    "arrival": {
+                      "iataCode": "ORY",
+                      "at": "2021-07-11T20:30:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "9433",
+                    "aircraft": {
+                      "code": "318"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT1H55M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              }
+            ],
+            "price": {
+              "currency": "EUR",
+              "total": "381.86",
+              "base": "211.00",
+              "fees": [
+                {
+                  "amount": "0.00",
+                  "type": "TICKETING"
+                }
+              ],
+              "grandTotal": "381.86"
+            },
+            "pricingOptions": {
+              "fareType": [
+                "PUBLISHED"
+              ],
+              "includedCheckedBagsOnly": false,
+              "refundableFare": false,
+              "noRestrictionFare": false,
+              "noPenaltyFare": false
+            },
+            "validatingAirlineCodes": [
+              "AF"
+            ],
+            "travelerPricings": [
+              {
+                "travelerId": "1",
+                "fareOption": "STANDARD",
+                "travelerType": "ADULT",
+                "price": {
+                  "currency": "EUR",
+                  "total": "186.96",
+                  "base": "111.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06A",
+                        "description": "LIGHT MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": true,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "travelerId": "2",
+                "fareOption": "STANDARD",
+                "travelerType": "CHILD",
+                "price": {
+                  "currency": "EUR",
+                  "total": "164.96",
+                  "base": "89.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06A",
+                        "description": "LIGHT MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": true,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    }
+                  }
+                ]
+              },
+              {
+                "travelerId": "3",
+                "fareOption": "STANDARD",
+                "travelerType": "HELD_INFANT",
+                "associatedAdultId": "1",
+                "price": {
+                  "currency": "EUR",
+                  "total": "29.94",
+                  "base": "11.00",
+                  "taxes": [
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06A",
+                        "description": "LIGHT MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": true,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OALG",
+                    "brandedFare": "LIGHT1",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "flight-offer",
+            "id": "3",
+            "source": "GDS",
+            "instantTicketingRequired": false,
+            "paymentCardRequired": false,
+            "lastTicketingDate": "2021-07-04",
+            "itineraries": [
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "CDG",
+                      "terminal": "2F",
+                      "at": "2021-07-04T09:30:00"
+                    },
+                    "arrival": {
+                      "iataCode": "MAD",
+                      "at": "2021-07-04T11:35:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1300",
+                    "aircraft": {
+                      "code": "321"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT2H5M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "MAD",
+                      "terminal": "2",
+                      "at": "2021-07-11T18:35:00"
+                    },
+                    "arrival": {
+                      "iataCode": "ORY",
+                      "at": "2021-07-11T20:30:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "9433",
+                    "aircraft": {
+                      "code": "318"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT1H55M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              }
+            ],
+            "price": {
+              "currency": "EUR",
+              "total": "457.86",
+              "base": "287.00",
+              "fees": [
+                {
+                  "amount": "0.00",
+                  "type": "TICKETING"
+                }
+              ],
+              "grandTotal": "457.86"
+            },
+            "pricingOptions": {
+              "fareType": [
+                "PUBLISHED"
+              ],
+              "includedCheckedBagsOnly": false,
+              "refundableFare": false,
+              "noRestrictionFare": false,
+              "noPenaltyFare": false
+            },
+            "validatingAirlineCodes": [
+              "AF"
+            ],
+            "travelerPricings": [
+              {
+                "travelerId": "1",
+                "fareOption": "STANDARD",
+                "travelerType": "ADULT",
+                "price": {
+                  "currency": "EUR",
+                  "total": "226.96",
+                  "base": "151.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "2",
+                "fareOption": "STANDARD",
+                "travelerType": "CHILD",
+                "price": {
+                  "currency": "EUR",
+                  "total": "196.96",
+                  "base": "121.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "3",
+                "fareOption": "STANDARD",
+                "travelerType": "HELD_INFANT",
+                "associatedAdultId": "1",
+                "price": {
+                  "currency": "EUR",
+                  "total": "33.94",
+                  "base": "15.00",
+                  "taxes": [
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OBST",
+                    "brandedFare": "STANDARD",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06B",
+                        "description": "STANDARD MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "flight-offer",
+            "id": "4",
+            "source": "GDS",
+            "instantTicketingRequired": false,
+            "paymentCardRequired": false,
+            "lastTicketingDate": "2021-07-04",
+            "itineraries": [
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "CDG",
+                      "terminal": "2F",
+                      "at": "2021-07-04T09:30:00"
+                    },
+                    "arrival": {
+                      "iataCode": "MAD",
+                      "at": "2021-07-04T11:35:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1300",
+                    "aircraft": {
+                      "code": "321"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT2H5M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "MAD",
+                      "terminal": "2",
+                      "at": "2021-07-11T18:35:00"
+                    },
+                    "arrival": {
+                      "iataCode": "ORY",
+                      "at": "2021-07-11T20:30:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "9433",
+                    "aircraft": {
+                      "code": "318"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT1H55M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              }
+            ],
+            "price": {
+              "currency": "EUR",
+              "total": "685.86",
+              "base": "515.00",
+              "fees": [
+                {
+                  "amount": "0.00",
+                  "type": "TICKETING"
+                }
+              ],
+              "grandTotal": "685.86"
+            },
+            "pricingOptions": {
+              "fareType": [
+                "PUBLISHED"
+              ],
+              "includedCheckedBagsOnly": false,
+              "refundableFare": false,
+              "noRestrictionFare": false,
+              "noPenaltyFare": false
+            },
+            "validatingAirlineCodes": [
+              "AF"
+            ],
+            "travelerPricings": [
+              {
+                "travelerId": "1",
+                "fareOption": "STANDARD",
+                "travelerType": "ADULT",
+                "price": {
+                  "currency": "EUR",
+                  "total": "346.96",
+                  "base": "271.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "2",
+                "fareOption": "STANDARD",
+                "travelerType": "CHILD",
+                "price": {
+                  "currency": "EUR",
+                  "total": "292.96",
+                  "base": "217.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "1.13",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "1.50",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "3",
+                "fareOption": "STANDARD",
+                "travelerType": "HELD_INFANT",
+                "associatedAdultId": "1",
+                "price": {
+                  "currency": "EUR",
+                  "total": "45.94",
+                  "base": "27.00",
+                  "taxes": [
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "QS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "Q",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "ECONOMY",
+                    "fareBasis": "VS50OEFX",
+                    "brandedFare": "FLEX",
+                    "class": "V",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0C3",
+                        "description": "CHECKED BAG 1PC OF 23KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0MR",
+                        "description": "CABIN BAGGAGE 12KG 1PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "050",
+                        "description": "CHOICE OF STANDARD SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AT",
+                        "description": "SNACK",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "06D",
+                        "description": "FLEX MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "058",
+                        "description": "UPGRADE ELIGIBILITY",
+                        "isChargeable": true,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "flight-offer",
+            "id": "5",
+            "source": "GDS",
+            "instantTicketingRequired": false,
+            "paymentCardRequired": false,
+            "lastTicketingDate": "2021-07-04",
+            "itineraries": [
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "CDG",
+                      "terminal": "2F",
+                      "at": "2021-07-04T09:30:00"
+                    },
+                    "arrival": {
+                      "iataCode": "MAD",
+                      "at": "2021-07-04T11:35:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1300",
+                    "aircraft": {
+                      "code": "321"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT2H5M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "MAD",
+                      "terminal": "2",
+                      "at": "2021-07-11T18:35:00"
+                    },
+                    "arrival": {
+                      "iataCode": "ORY",
+                      "at": "2021-07-11T20:30:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "9433",
+                    "aircraft": {
+                      "code": "318"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT1H55M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              }
+            ],
+            "price": {
+              "currency": "EUR",
+              "total": "759.14",
+              "base": "553.00",
+              "fees": [
+                {
+                  "amount": "0.00",
+                  "type": "TICKETING"
+                }
+              ],
+              "grandTotal": "759.14"
+            },
+            "pricingOptions": {
+              "fareType": [
+                "PUBLISHED"
+              ],
+              "includedCheckedBagsOnly": false,
+              "refundableFare": false,
+              "noRestrictionFare": false,
+              "noPenaltyFare": false
+            },
+            "validatingAirlineCodes": [
+              "AF"
+            ],
+            "travelerPricings": [
+              {
+                "travelerId": "1",
+                "fareOption": "STANDARD",
+                "travelerType": "ADULT",
+                "price": {
+                  "currency": "EUR",
+                  "total": "384.60",
+                  "base": "291.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "11.27",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "9.00",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "2",
+                "fareOption": "STANDARD",
+                "travelerType": "CHILD",
+                "price": {
+                  "currency": "EUR",
+                  "total": "326.60",
+                  "base": "233.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "11.27",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "9.00",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "3",
+                "fareOption": "STANDARD",
+                "travelerType": "HELD_INFANT",
+                "associatedAdultId": "1",
+                "price": {
+                  "currency": "EUR",
+                  "total": "47.94",
+                  "base": "29.00",
+                  "taxes": [
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "OS50OBNB",
+                    "brandedFare": "BIZLEISURE",
+                    "class": "O",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "flight-offer",
+            "id": "6",
+            "source": "GDS",
+            "instantTicketingRequired": false,
+            "paymentCardRequired": false,
+            "lastTicketingDate": "2021-07-04",
+            "itineraries": [
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "CDG",
+                      "terminal": "2F",
+                      "at": "2021-07-04T09:30:00"
+                    },
+                    "arrival": {
+                      "iataCode": "MAD",
+                      "at": "2021-07-04T11:35:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1300",
+                    "aircraft": {
+                      "code": "321"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT2H5M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "departure": {
+                      "iataCode": "MAD",
+                      "terminal": "2",
+                      "at": "2021-07-11T18:35:00"
+                    },
+                    "arrival": {
+                      "iataCode": "ORY",
+                      "at": "2021-07-11T20:30:00"
+                    },
+                    "carrierCode": "AF",
+                    "number": "9433",
+                    "aircraft": {
+                      "code": "318"
+                    },
+                    "operating": {
+                      "carrierCode": "AF"
+                    },
+                    "duration": "PT1H55M",
+                    "id": "14",
+                    "numberOfStops": 0,
+                    "blacklistedInEU": false
+                  }
+                ]
+              }
+            ],
+            "price": {
+              "currency": "EUR",
+              "total": "1831.14",
+              "base": "1625.00",
+              "fees": [
+                {
+                  "amount": "0.00",
+                  "type": "TICKETING"
+                }
+              ],
+              "grandTotal": "1831.14"
+            },
+            "pricingOptions": {
+              "fareType": [
+                "PUBLISHED"
+              ],
+              "includedCheckedBagsOnly": false,
+              "refundableFare": false,
+              "noRestrictionFare": false,
+              "noPenaltyFare": false
+            },
+            "validatingAirlineCodes": [
+              "AF"
+            ],
+            "travelerPricings": [
+              {
+                "travelerId": "1",
+                "fareOption": "STANDARD",
+                "travelerType": "ADULT",
+                "price": {
+                  "currency": "EUR",
+                  "total": "948.60",
+                  "base": "855.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "11.27",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "9.00",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "2",
+                "fareOption": "STANDARD",
+                "travelerType": "CHILD",
+                "price": {
+                  "currency": "EUR",
+                  "total": "777.60",
+                  "base": "684.00",
+                  "taxes": [
+                    {
+                      "amount": "16.36",
+                      "code": "FR"
+                    },
+                    {
+                      "amount": "11.27",
+                      "code": "IZ"
+                    },
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "9.00",
+                      "code": "O4"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    },
+                    {
+                      "amount": "12.03",
+                      "code": "QX"
+                    },
+                    {
+                      "amount": "26.00",
+                      "code": "YQ"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 2
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "travelerId": "3",
+                "fareOption": "STANDARD",
+                "travelerType": "HELD_INFANT",
+                "associatedAdultId": "1",
+                "price": {
+                  "currency": "EUR",
+                  "total": "104.94",
+                  "base": "86.00",
+                  "taxes": [
+                    {
+                      "amount": "14.95",
+                      "code": "JD"
+                    },
+                    {
+                      "amount": "0.61",
+                      "code": "OG"
+                    },
+                    {
+                      "amount": "3.38",
+                      "code": "QV"
+                    }
+                  ]
+                },
+                "fareDetailsBySegment": [
+                  {
+                    "segmentId": "2",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  },
+                  {
+                    "segmentId": "14",
+                    "cabin": "BUSINESS",
+                    "fareBasis": "IS50AENB",
+                    "brandedFare": "BIZFLEX",
+                    "class": "I",
+                    "includedCheckedBags": {
+                      "quantity": 1
+                    },
+                    "amenities": [
+                      {
+                        "code": "0MS",
+                        "description": "CABIN BAGGAGE 18KG 2PC 115CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0FM",
+                        "description": "CHECKED BAG 2PC OF 32KG 158CM",
+                        "isChargeable": false,
+                        "amenityType": "BAGGAGE"
+                      },
+                      {
+                        "code": "0B3",
+                        "description": "MEAL",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "05Z",
+                        "description": "PRIVACY SEAT",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0BX",
+                        "description": "BUSINESS LOUNGE ACCESS",
+                        "isChargeable": false,
+                        "amenityType": "LOUNGE"
+                      },
+                      {
+                        "code": "06H",
+                        "description": "BUSINESS CLASS MILES ACCRUAL",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "0AX",
+                        "description": "BEVERAGE",
+                        "isChargeable": false,
+                        "amenityType": "MEAL"
+                      },
+                      {
+                        "code": "059",
+                        "description": "CHANGEABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "056",
+                        "description": "REFUNDABLE TICKET",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07G",
+                        "description": "SKY PRIORITY",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      },
+                      {
+                        "code": "07H",
+                        "description": "GO SHOW",
+                        "isChargeable": false,
+                        "amenityType": "BRANDED_FARES"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "dictionaries": {
+          "locations": {
+            "MAD": {
+              "cityCode": "MAD",
+              "countryCode": "ES"
+            },
+            "CDG": {
+              "cityCode": "PAR",
+              "countryCode": "FR"
+            },
+            "ORY": {
+              "cityCode": "PAR",
+              "countryCode": "FR"
+            }
+          }
+        }
+      }
+    },
+    "BOSE_Issue": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "the HTTP status code applicable to this error",
+          "type": "integer"
+        },
+        "code": {
+          "description": "an application-specific error code",
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "description": "a short summary of the error",
+          "type": "string"
+        },
+        "detail": {
+          "description": "explanation of the error",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/BOSE_Issue_Source"
+        }
+      }
+    },
+    "BOSE_Issue_Source": {
+      "type": "object",
+      "title": "Issue_Source",
+      "description": "an object containing references to the source of the error",
+      "maxProperties": 1,
+      "properties": {
+        "pointer": {
+          "description": "a JSON Pointer [RFC6901] to the associated entity in the request document",
+          "type": "string"
+        },
+        "parameter": {
+          "description": "a string indicating which URI query parameter caused the issue",
+          "type": "string"
+        },
+        "example": {
+          "description": "a string indicating an example of the right value",
+          "type": "string"
+        }
+      }
+    },
+    "BOSE_Collection_Meta_Upsell": {
+      "title": "Collection_Meta",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "example": 1
+        },
+        "oneWayUpselledCombinations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_oneWayUpselledCombinations"
+          }
+        }
+      }
+    },
+    "BOSE_oneWayUpselledCombinations": {
+      "title": "oneWayUpselledCombinations",
+      "properties": {
+        "flightOfferId": {
+          "type": "string"
+        },
+        "upselledFlightOfferIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "BOSE_FlightOffer": {
+      "title": "Flight-offer",
+      "type": "object",
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "the resource name",
+          "example": "flight-offer"
+        },
+        "id": {
+          "description": "Id of the flight offer",
+          "type": "string",
+          "example": "1"
+        },
+        "source": {
+          "$ref": "#/definitions/BOSE_FlightOfferSource"
+        },
+        "instantTicketingRequired": {
+          "description": "If true, inform that a ticketing will be required at booking step",
+          "type": "boolean",
+          "example": false
+        },
+        "disablePricing": {
+          "description": "BOOK step ONLY - If true, allows to book a PNR without pricing. Only for the source \"GDS\"",
+          "type": "boolean",
+          "example": false
+        },
+        "nonHomogeneous": {
+          "description": "If true, upon completion of the booking, this pricing solution is expected to yield multiple records (a record contains booking information confirmed and stored, typically a Passenger Name Record (PNR), in the provider GDS or system)",
+          "type": "boolean",
+          "example": false
+        },
+        "oneWay": {
+          "description": "If true, the flight offer fulfills only one originDestination and has to be combined with other oneWays to complete the whole journey.",
+          "type": "boolean",
+          "example": false
+        },
+        "paymentCardRequired": {
+          "description": "If true, a payment card is mandatory to book this flight offer",
+          "type": "boolean",
+          "example": false
+        },
+        "lastTicketingDate": {
+          "description": "If booked on the same day as the search (with respect to timezone), this flight offer is guaranteed to be thereafter valid for ticketing until this date (included). Unspecified when it does not make sense for this flight offer (e.g. no control over ticketing once booked). YYYY-MM-DD format, e.g. 2019-06-07",
+          "type": "string",
+          "example": "2018-06-19T00:00:00.000Z"
+        },
+        "numberOfBookableSeats": {
+          "description": "Number of seats bookable in a single request. Can not be higher than 9.",
+          "type": "number",
+          "example": 9,
+          "minimum": 1,
+          "maximum": 9
+        },
+        "itineraries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 250,
+          "items": {
+            "$ref": "#/definitions/BOSE_Itineraries"
+          }
+        },
+        "price": {
+          "$ref": "#/definitions/BOSE_Extended_Price"
+        },
+        "pricingOptions": {
+          "$ref": "#/definitions/BOSE_PricingOptions"
+        },
+        "validatingAirlineCodes": {
+          "description": "This option ensures that the system will only consider these airlines.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 9,
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "AF"
+          ]
+        },
+        "travelerPricings": {
+          "title": "TravelerPricings",
+          "description": "Fare information for each traveler/segment",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 18,
+          "items": {
+            "$ref": "#/definitions/BOSE_TravelerPricing"
+          }
+        },
+        "fareRules": {
+          "description": "Fare rules of the flight offer",
+          "$ref": "#/definitions/BOSE_FareRules"
+        }
+      }
+    },
+    "BOSE_FlightOfferSource": {
+      "description": "source of the flight offer",
+      "type": "string",
+      "enum": [
+        "GDS",
+        "LTC",
+        "PYTON",
+        "EAC",
+        "NDC"
+      ],
+      "example": "GDS"
+    },
+    "BOSE_Itineraries": {
+      "title": "Itineraries",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m",
+          "type": "string",
+          "example": "PT2H10M"
+        },
+        "segments": {
+          "title": "Segments",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 9,
+          "items": {
+            "$ref": "#/definitions/BOSE_Segment"
+          }
+        }
+      },
+      "required": [
+        "segments"
+      ]
+    },
+    "BOSE_Segment": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Id of the segment",
+              "type": "string",
+              "example": 1
+            },
+            "numberOfStops": {
+              "description": "Number of stops",
+              "type": "integer",
+              "example": 0
+            },
+            "blacklistedInEU": {
+              "description": "When the flight has a marketing or/and operating airline that is identified as blacklisted by the European Commission. \n\nTo improve travel safety, the European Commission regularly updates the list of the banned carriers from operating in Europe. It allows any Travel Agency located in the European Union to easily identify and hide any travel recommendation based on some unsafe airlines. \nThe [list of the banned airlines](https://ec.europa.eu/transport/sites/transport/files/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   \n",
+              "type": "boolean",
+              "example": false
+            },
+            "co2Emissions": {
+              "description": "Co2 informations",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "title": "Co2Emission",
+                "$ref": "#/definitions/BOSE_Co2Emission"
+              }
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/BOSE_FlightSegment"
+        }
+      ]
+    },
+    "BOSE_Co2Emission": {
+      "type": "object",
+      "properties": {
+        "weight": {
+          "description": "Weight of Co2 emitted for the concerned segment",
+          "type": "integer",
+          "example": 90
+        },
+        "weightUnit": {
+          "description": "Code to qualify unit as pounds or kilos",
+          "type": "string",
+          "example": "KG"
+        },
+        "cabin": {
+          "$ref": "#/definitions/BOSE_TravelClass"
+        }
+      }
+    },
+    "BOSE_TravelClass": {
+      "description": "quality of service offered in the cabin where the seat is located in this flight. Economy, premium economy, business or first class",
+      "type": "string",
+      "enum": [
+        "ECONOMY",
+        "PREMIUM_ECONOMY",
+        "BUSINESS",
+        "FIRST"
+      ],
+      "example": "PREMIUM_ECONOMY"
+    },
+    "BOSE_FlightSegment": {
+      "type": "object",
+      "description": "defining a flight segment; including both operating and marketing details when applicable",
+      "properties": {
+        "departure": {
+          "$ref": "#/definitions/BOSE_FlightEndPoint"
+        },
+        "arrival": {
+          "$ref": "#/definitions/BOSE_FlightEndPoint"
+        },
+        "carrierCode": {
+          "type": "string",
+          "description": "providing the airline / carrier code",
+          "minLength": 1,
+          "maxLength": 2,
+          "example": "DL"
+        },
+        "number": {
+          "type": "string",
+          "description": "the flight number as assigned by the carrier",
+          "minLength": 1,
+          "maxLength": 4,
+          "example": "212"
+        },
+        "aircraft": {
+          "$ref": "#/definitions/BOSE_AircraftEquipment"
+        },
+        "operating": {
+          "$ref": "#/definitions/BOSE_OperatingFlight"
+        },
+        "duration": {
+          "type": "string",
+          "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+          "example": "PT2H10M"
+        },
+        "stops": {
+          "type": "array",
+          "description": "information regarding the different stops composing the flight segment. E.g. technical stop, change of gauge...",
+          "items": {
+            "$ref": "#/definitions/BOSE_FlightStop"
+          }
+        }
+      }
+    },
+    "BOSE_FlightEndPoint": {
+      "title": "FlightEndPoint",
+      "description": "departure or arrival information",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BOSE_OriginalFlightEndPoint"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "at": {
+              "description": "local date and time in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+              "type": "string",
+              "format": "date-time",
+              "example": "2017-10-23T20:00:00"
+            }
+          }
+        }
+      ]
+    },
+    "BOSE_OriginalFlightEndPoint": {
+      "type": "object",
+      "description": "departure or arrival information",
+      "properties": {
+        "iataCode": {
+          "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+          "type": "string",
+          "example": "JFK"
+        },
+        "terminal": {
+          "description": "terminal name / number",
+          "type": "string",
+          "example": "T2"
+        }
+      }
+    },
+    "BOSE_AircraftEquipment": {
+      "description": "information related to the aircraft",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "IATA aircraft code (http://www.flugzeuginfo.net/table_accodes_iata_en.php)\n",
+          "pattern": "[a-zA-Z0-9]{3}",
+          "example": "318"
+        }
+      }
+    },
+    "BOSE_OperatingFlight": {
+      "type": "object",
+      "description": "information about the operating flight",
+      "properties": {
+        "carrierCode": {
+          "type": "string",
+          "description": "providing the airline / carrier code",
+          "minLength": 1,
+          "maxLength": 2,
+          "example": "DL"
+        }
+      }
+    },
+    "BOSE_FlightStop": {
+      "title": "FlightStop",
+      "description": "details of stops for direct or change of gauge flights",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BOSE_OriginalFlightStop"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "arrivalAt": {
+              "description": "arrival at the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+              "type": "string",
+              "format": "date-time",
+              "example": "2017-10-23T20:00:00"
+            },
+            "departureAt": {
+              "description": "departure from the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+              "type": "string",
+              "format": "date-time",
+              "example": "2017-10-23T20:00:00"
+            }
+          }
+        }
+      ]
+    },
+    "BOSE_OriginalFlightStop": {
+      "description": "details of stops for direct or change of gauge flights",
+      "type": "object",
+      "properties": {
+        "iataCode": {
+          "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+          "type": "string",
+          "example": "JFK"
+        },
+        "duration": {
+          "type": "string",
+          "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+          "example": "PT2H10M"
+        }
+      }
+    },
+    "BOSE_Extended_Price": {
+      "type": "object",
+      "title": "Price",
+      "description": "price information",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "margin": {
+              "description": "BOOK step ONLY - The price margin percentage (plus or minus) that the booking can tolerate. When set to 0, then no price magin is tolerated.",
+              "type": "string",
+              "example": "1.00"
+            },
+            "grandTotal": {
+              "description": "Total amount paid by the user (including fees and selected additional services).",
+              "type": "string",
+              "example": "987.00"
+            },
+            "billingCurrency": {
+              "description": "Currency of the payment. It may be different than the requested currency",
+              "type": "string",
+              "example": "EUR"
+            },
+            "additionalServices": {
+              "type": "array",
+              "title": "AdditionalServices",
+              "items": {
+                "$ref": "#/definitions/BOSE_AdditionalService"
+              }
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/BOSE_Price"
+        }
+      ]
+    },
+    "BOSE_AdditionalService": {
+      "title": "AdditionalService",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "332.70"
+        },
+        "type": {
+          "$ref": "#/definitions/BOSE_AdditionalServiceType"
+        }
+      }
+    },
+    "BOSE_AdditionalServiceType": {
+      "type": "string",
+      "description": "additional service type",
+      "enum": [
+        "CHECKED_BAGS",
+        "MEALS",
+        "SEATS",
+        "OTHER_SERVICES"
+      ],
+      "example": "CHECKED_BAGS"
+    },
+    "BOSE_Price": {
+      "properties": {
+        "currency": {
+          "type": "string",
+          "example": "USD"
+        },
+        "total": {
+          "description": "Total amount paid by the user",
+          "type": "string",
+          "example": "932.70"
+        },
+        "base": {
+          "description": "Amount without taxes",
+          "type": "string",
+          "example": "632.70"
+        },
+        "fees": {
+          "description": "List of applicable fees",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Fee"
+          }
+        },
+        "taxes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Tax"
+          }
+        },
+        "refundableTaxes": {
+          "description": "The amount of taxes which are refundable",
+          "type": "string",
+          "example": "200.00"
+        },
+        "margins": {
+          "description": "List of agent margins",
+          "type": "array",
+          "title": "Margins",
+          "items": {
+            "$ref": "#/definitions/BOSE_Margin"
+          }
+        },
+        "discounts": {
+          "description": "List of agent discounts",
+          "type": "array",
+          "title": "PriceDiscounts",
+          "items": {
+            "$ref": "#/definitions/BOSE_PriceDiscount"
+          }
+        }
+      }
+    },
+    "BOSE_Fee": {
+      "description": "a fee",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "332.70"
+        },
+        "type": {
+          "$ref": "#/definitions/BOSE_FeeType"
+        }
+      }
+    },
+    "BOSE_FeeType": {
+      "type": "string",
+      "description": "type of fee",
+      "enum": [
+        "TICKETING",
+        "FORM_OF_PAYMENT",
+        "SUPPLIER"
+      ],
+      "example": "TICKETING"
+    },
+    "BOSE_Tax": {
+      "description": "a tax",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "332.70"
+        },
+        "code": {
+          "type": "string",
+          "example": "MX"
+        }
+      }
+    },
+    "BOSE_Margin": {
+      "title": "Margin",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "10.00"
+        },
+        "name": {
+          "description": "agent margin type",
+          "type": "string",
+          "enum": [
+            "AGENT_MARKUP",
+            "AGENT_FEE"
+          ],
+          "example": "AGENT_MARKUP"
+        }
+      }
+    },
+    "BOSE_PriceDiscount": {
+      "title": "PriceDiscount",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "10.00"
+        },
+        "name": {
+          "description": "agent discount type",
+          "type": "string",
+          "enum": [
+            "AGENT_DISCOUNT"
+          ],
+          "example": "AGENT_DISCOUNT"
+        }
+      }
+    },
+    "BOSE_PricingOptions": {
+      "title": "PricingOptions",
+      "type": "object",
+      "properties": {
+        "fareType": {
+          "description": "type of fare of the flight-offer",
+          "$ref": "#/definitions/BOSE_PricingOptionsFareType"
+        },
+        "corporateCodes": {
+          "type": "array",
+          "description": "Allow Corporate negotiated fares using one or more corporate number (corporate code).",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "123456"
+          ]
+        },
+        "includedCheckedBagsOnly": {
+          "type": "boolean",
+          "description": "If true, returns the flight-offers with included checked bags only",
+          "example": true
+        },
+        "refundableFare": {
+          "type": "boolean",
+          "description": "If true, returns the flight-offers with refundable fares only",
+          "example": true
+        },
+        "noRestrictionFare": {
+          "type": "boolean",
+          "description": "If true, returns the flight-offers with no restriction fares only",
+          "example": true
+        },
+        "noPenaltyFare": {
+          "type": "boolean",
+          "description": "If true, returns the flight-offers with no penalty fares only",
+          "example": true
+        }
+      }
+    },
+    "BOSE_PricingOptionsFareType": {
+      "type": "array",
+      "description": "type of fare of the flight-offer",
+      "items": {
+        "type": "string",
+        "enum": [
+          "PUBLISHED",
+          "NEGOTIATED",
+          "CORPORATE"
+        ]
+      },
+      "example": [
+        "PUBLISHED"
+      ]
+    },
+    "BOSE_TravelerPricing": {
+      "title": "TravelerPricing",
+      "required": [
+        "travelerId",
+        "fareOption",
+        "travelerType",
+        "fareDetailsBySegment"
+      ],
+      "properties": {
+        "travelerId": {
+          "type": "string",
+          "example": "1",
+          "description": "Id of the traveler"
+        },
+        "fareOption": {
+          "$ref": "#/definitions/BOSE_TravelerPricingFareOption"
+        },
+        "travelerType": {
+          "$ref": "#/definitions/BOSE_TravelerType"
+        },
+        "associatedAdultId": {
+          "type": "string",
+          "description": "if type=\"HELD_INFANT\", corresponds to the adult traveler's id who will share the seat"
+        },
+        "price": {
+          "description": "price detail of the traveler",
+          "$ref": "#/definitions/BOSE_Price"
+        },
+        "fareDetailsBySegment": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 18,
+          "items": {
+            "$ref": "#/definitions/BOSE_FareDetailsBySegment"
+          }
+        }
+      }
+    },
+    "BOSE_TravelerPricingFareOption": {
+      "description": "option specifying a group of fares, which may be valid under certain conditons\nCan be used to specify special fare discount for a passenger\n",
+      "type": "string",
+      "enum": [
+        "STANDARD",
+        "INCLUSIVE_TOUR",
+        "SPANISH_MELILLA_RESIDENT",
+        "SPANISH_CEUTA_RESIDENT",
+        "SPANISH_CANARY_RESIDENT",
+        "SPANISH_BALEARIC_RESIDENT",
+        "AIR_FRANCE_METROPOLITAN_DISCOUNT_PASS",
+        "AIR_FRANCE_DOM_DISCOUNT_PASS",
+        "AIR_FRANCE_COMBINED_DISCOUNT_PASS",
+        "AIR_FRANCE_FAMILY",
+        "ADULT_WITH_COMPANION",
+        "COMPANION"
+      ],
+      "example": "STANDARD"
+    },
+    "BOSE_TravelerType": {
+      "type": "string",
+      "description": "traveler type\nage restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y\n",
+      "enum": [
+        "ADULT",
+        "CHILD",
+        "SENIOR",
+        "YOUNG",
+        "HELD_INFANT",
+        "SEATED_INFANT",
+        "STUDENT"
+      ],
+      "example": "ADULT"
+    },
+    "BOSE_FareDetailsBySegment": {
+      "title": "FareDetailsBySegment",
+      "description": "Fare details of the segment",
+      "required": [
+        "segmentId"
+      ],
+      "properties": {
+        "segmentId": {
+          "type": "string",
+          "example": "1",
+          "description": "Id of the segment"
+        },
+        "cabin": {
+          "$ref": "#/definitions/BOSE_TravelClass"
+        },
+        "fareBasis": {
+          "description": "Fare basis specifying the rules of a fare. Usually, though not always, is composed of the booking class code followed by a set of letters and digits representing other characteristics of the ticket, such as refundability, minimum stay requirements, discounts or special promotional elements.",
+          "type": "string",
+          "example": "ANNNNF4K",
+          "pattern": "[[A-Z0-9]{1,18}"
+        },
+        "brandedFare": {
+          "description": "The name of the Fare Family corresponding to the fares. Only for the GDS provider and if the airline has fare families filled",
+          "type": "string",
+          "example": "LIGHTONE"
+        },
+        "class": {
+          "description": "The code of the booking class, a.k.a. class of service or Reservations/Booking Designator (RBD)",
+          "type": "string",
+          "example": "A",
+          "pattern": "[A-Z]{1}"
+        },
+        "isAllotment": {
+          "description": "True if the corresponding booking class is in an allotment",
+          "type": "boolean",
+          "example": true
+        },
+        "allotmentDetails": {
+          "$ref": "#/definitions/BOSE_AllotmentDetails"
+        },
+        "sliceDiceIndicator": {
+          "$ref": "#/definitions/BOSE_SliceDiceIndicator"
+        },
+        "includedCheckedBags": {
+          "title": "includedCheckedBags",
+          "$ref": "#/definitions/BOSE_BaggageAllowance",
+          "description": "Details of the included checked bags"
+        },
+        "additionalServices": {
+          "$ref": "#/definitions/BOSE_AdditionalServicesRequest"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Amenity"
+          }
+        }
+      }
+    },
+    "BOSE_AllotmentDetails": {
+      "title": "AllotmentDetails",
+      "type": "object",
+      "properties": {
+        "tourName": {
+          "description": "The tour name agreed for this specific allotment.",
+          "type": "string"
+        },
+        "tourReference": {
+          "description": "The tour reference agreed for this specific allotment.",
+          "type": "string"
+        }
+      }
+    },
+    "BOSE_SliceDiceIndicator": {
+      "description": "slice and Dice indicator, such as Local Availability, Sub OnD(Origin and Destination) 1 Availability and Sub OnD 2 Availability",
+      "type": "string",
+      "enum": [
+        "LOCAL_AVAILABILITY",
+        "SUB_OD_AVAILABILITY_1",
+        "SUB_OD_AVAILABILITY_2"
+      ]
+    },
+    "BOSE_BaggageAllowance": {
+      "description": "baggageAllowance",
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "integer",
+          "description": "Total number of units",
+          "example": 1
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Weight of the baggage allowance",
+          "example": 20
+        },
+        "weightUnit": {
+          "type": "string",
+          "description": "Code to qualify unit as pounds or kilos",
+          "example": "KG"
+        }
+      }
+    },
+    "BOSE_AdditionalServicesRequest": {
+      "type": "object",
+      "title": "AdditionalServicesRequest",
+      "properties": {
+        "chargeableCheckedBags": {
+          "title": "chargeableCheckedBags",
+          "description": "Details of chargeable checked bags",
+          "$ref": "#/definitions/BOSE_ChargeableCheckdBags"
+        },
+        "chargeableSeat": {
+          "title": "chargeableSeat",
+          "description": "Details of chargeable seat",
+          "$ref": "#/definitions/BOSE_ChargeableSeat"
+        },
+        "chargeableSeatNumber": {
+          "type": "string",
+          "description": "seat number",
+          "example": "33D",
+          "pattern": "[1-9][0-9]{0,2}[A-Z]?"
+        },
+        "otherServices": {
+          "type": "array",
+          "description": "Other services to add",
+          "items": {
+            "$ref": "#/definitions/BOSE_ServiceName"
+          },
+          "example": [
+            "PRIORITY_BOARDING"
+          ]
+        }
+      }
+    },
+    "BOSE_ChargeableCheckdBags": {
+      "description": "Details of chargeable checked bags",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BOSE_BaggageAllowance"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Id of the chargeable bag",
+              "type": "string",
+              "example": "1"
+            }
+          }
+        }
+      ]
+    },
+    "BOSE_ChargeableSeat": {
+      "description": "Details of chargeable seat",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Id of the chargeable seat",
+          "type": "string",
+          "example": "1"
+        },
+        "number": {
+          "type": "string",
+          "description": "seat number",
+          "example": "33D",
+          "pattern": "[1-9][0-9]{0,2}[A-Z]?"
+        }
+      }
+    },
+    "BOSE_ServiceName": {
+      "description": "type of service",
+      "type": "string",
+      "enum": [
+        "PRIORITY_BOARDING",
+        "AIRPORT_CHECKIN"
+      ],
+      "example": "PRIORITY_BOARDING"
+    },
+    "BOSE_Amenity": {
+      "type": "object",
+      "description": "Amenity",
+      "title": "Amenity",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isChargeable": {
+          "type": "boolean"
+        },
+        "amenityType": {
+          "$ref": "#/definitions/BOSE_AmenityType"
+        }
+      }
+    },
+    "BOSE_AmenityType": {
+      "description": "Amenity type",
+      "type": "string",
+      "enum": [
+        "BUNDLED_SERVICE",
+        "BRANDED_FARES",
+        "BAGGAGE",
+        "CARBON_OFFSET",
+        "FREQUENT_FLYER",
+        "GROUND",
+        "ENTERTAINMENT",
+        "LOUNGE",
+        "MEDICAL",
+        "MEAL",
+        "PETS",
+        "RULE_OVERRIDE",
+        "STANDBY",
+        "STORE",
+        "TRAVEL_SERVICES",
+        "UNACCOMPANIED_TRAVEL",
+        "UPGRADES",
+        "UNACCOMPANIED_TRAVEL_UNESCORTED",
+        "PRE_RESERVED_SEAT"
+      ]
+    },
+    "BOSE_FareRules": {
+      "type": "object",
+      "title": "FareRules",
+      "properties": {
+        "currency": {
+          "type": "string",
+          "description": "The currency of the penalties"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/BOSE_TermAndCondition"
+          }
+        }
+      }
+    },
+    "BOSE_TermAndCondition": {
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "This defines what type of modification is concerned in this rule.",
+          "enum": [
+            "REFUND",
+            "EXCHANGE",
+            "REVALIDATION",
+            "REISSUE",
+            "REBOOK",
+            "CANCELLATION"
+          ],
+          "example": "EXCHANGE"
+        },
+        "circumstances": {
+          "type": "string"
+        },
+        "notApplicable": {
+          "type": "boolean"
+        },
+        "maxPenaltyAmount": {
+          "type": "string"
+        },
+        "descriptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Description"
+          }
+        }
+      }
+    },
+    "BOSE_Description": {
+      "title": "Description",
+      "properties": {
+        "descriptionType": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "BOSE_Dictionaries": {
+      "type": "object",
+      "properties": {
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_LocationEntry"
+          }
+        },
+        "aircraft": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_AircraftEntry"
+          }
+        },
+        "currencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_CurrencyEntry"
+          }
+        },
+        "carriers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_CarrierEntry"
+          }
+        }
+      }
+    },
+    "BOSE_LocationEntry": {
+      "required": [
+        "key"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "$ref": "#/definitions/BOSE_LocationValue"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/BOSE_LocationValue"
+      }
+    },
+    "BOSE_LocationValue": {
+      "properties": {
+        "cityCode": {
+          "type": "string",
+          "description": "City code associated to the airport",
+          "example": "PAR"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "Country code of the airport",
+          "example": "FR"
+        }
+      }
+    },
+    "BOSE_AircraftEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "the manufacturer/model of aircraft",
+          "type": "string"
+        }
+      },
+      "additionalProperties": {
+        "description": "the manufacturer/model of aircraft",
+        "type": "string"
+      }
+    },
+    "BOSE_CurrencyEntry": {
+      "required": [
+        "key"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "Euro"
+        },
+        "additionalProperties": {
+          "type": "string",
+          "example": "EUR"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "example": "EUR"
+      }
+    },
+    "BOSE_CarrierEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "the carrier name",
+          "type": "string"
+        }
+      },
+      "additionalProperties": {
+        "description": "the carrier name",
+        "type": "string"
+      }
+    },
+    "BOSE_Error_400": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Issue"
+          }
+        }
+      },
+      "required": [
+        "errors"
+      ],
+      "example": {
+        "errors": [
+          {
+            "status": 400,
+            "code": 477,
+            "title": "INVALID FORMAT",
+            "detail": "invalid query parameter format",
+            "source": {
+              "parameter": "airport",
+              "example": "CDG"
+            }
+          }
+        ]
+      }
+    },
+    "BOSE_Error_500": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BOSE_Issue"
+          }
+        }
+      },
+      "required": [
+        "errors"
+      ],
+      "example": {
+        "errors": [
+          {
+            "status": 500,
+            "code": 141,
+            "title": "SYSTEM ERROR HAS OCCURRED"
+          }
+        ]
+      }
+    },
+    "BOSE_Get_Upsell_Query_Input": {
+      "title": "Get_Upsell_Query",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/BOSE_FlightOfferUpsellIn_Input"
+        }
+      },
+      "example": {
+        "data": {
+          "type": "flight-offers-upselling",
+          "flightOffers": [
+            {
+              "type": "flight-offer",
+              "id": "1",
+              "source": "GDS",
+              "instantTicketingRequired": false,
+              "nonHomogeneous": false,
+              "oneWay": false,
+              "lastTicketingDate": "2021-07-04",
+              "numberOfBookableSeats": 2,
+              "itineraries": [
+                {
+                  "duration": "PT2H5M",
+                  "segments": [
+                    {
+                      "departure": {
+                        "iataCode": "CDG",
+                        "terminal": "2F",
+                        "at": "2021-07-04T09:30:00"
+                      },
+                      "arrival": {
+                        "iataCode": "MAD",
+                        "terminal": "2",
+                        "at": "2021-07-04T11:35:00"
+                      },
+                      "carrierCode": "AF",
+                      "number": "1300",
+                      "aircraft": {
+                        "code": "321"
+                      },
+                      "operating": {
+                        "carrierCode": "AF"
+                      },
+                      "duration": "PT2H5M",
+                      "id": "2",
+                      "numberOfStops": 0,
+                      "blacklistedInEU": false
+                    }
+                  ]
+                },
+                {
+                  "duration": "PT1H55M",
+                  "segments": [
+                    {
+                      "departure": {
+                        "iataCode": "MAD",
+                        "terminal": "2",
+                        "at": "2021-07-11T18:35:00"
+                      },
+                      "arrival": {
+                        "iataCode": "ORY",
+                        "terminal": "1",
+                        "at": "2021-07-11T20:30:00"
+                      },
+                      "carrierCode": "AF",
+                      "number": "9433",
+                      "aircraft": {
+                        "code": "318"
+                      },
+                      "operating": {
+                        "carrierCode": "AF"
+                      },
+                      "duration": "PT1H55M",
+                      "id": "14",
+                      "numberOfStops": 0,
+                      "blacklistedInEU": false
+                    }
+                  ]
+                }
+              ],
+              "price": {
+                "currency": "EUR",
+                "total": "410.86",
+                "base": "240.00",
+                "fees": [
+                  {
+                    "amount": "0.00",
+                    "type": "SUPPLIER"
+                  },
+                  {
+                    "amount": "0.00",
+                    "type": "TICKETING"
+                  }
+                ],
+                "grandTotal": "410.86",
+                "additionalServices": [
+                  {
+                    "amount": "60.00",
+                    "type": "CHECKED_BAGS"
+                  }
+                ]
+              },
+              "pricingOptions": {
+                "fareType": [
+                  "PUBLISHED"
+                ],
+                "includedCheckedBagsOnly": false
+              },
+              "validatingAirlineCodes": [
+                "AF"
+              ],
+              "travelerPricings": [
+                {
+                  "travelerId": "1",
+                  "fareOption": "STANDARD",
+                  "travelerType": "ADULT",
+                  "price": {
+                    "currency": "EUR",
+                    "total": "201.96",
+                    "base": "126.00"
+                  },
+                  "fareDetailsBySegment": [
+                    {
+                      "segmentId": "2",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "AS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "A",
+                      "includedCheckedBags": {
+                        "quantity": 0
+                      }
+                    },
+                    {
+                      "segmentId": "14",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "VS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "V",
+                      "includedCheckedBags": {
+                        "quantity": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "travelerId": "2",
+                  "fareOption": "STANDARD",
+                  "travelerType": "CHILD",
+                  "price": {
+                    "currency": "EUR",
+                    "total": "176.96",
+                    "base": "101.00"
+                  },
+                  "fareDetailsBySegment": [
+                    {
+                      "segmentId": "2",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "AS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "A"
+                    },
+                    {
+                      "segmentId": "14",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "VS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "V"
+                    }
+                  ]
+                },
+                {
+                  "travelerId": "3",
+                  "fareOption": "STANDARD",
+                  "travelerType": "HELD_INFANT",
+                  "associatedAdultId": "1",
+                  "price": {
+                    "currency": "EUR",
+                    "total": "31.94",
+                    "base": "13.00"
+                  },
+                  "fareDetailsBySegment": [
+                    {
+                      "segmentId": "2",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "AS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "A"
+                    },
+                    {
+                      "segmentId": "14",
+                      "cabin": "ECONOMY",
+                      "fareBasis": "VS50OALG",
+                      "brandedFare": "LIGHT1",
+                      "class": "V"
+                    }
+                  ]
+                }
+              ],
+              "fareRules": {
+                "rules": [
+                  {
+                    "category": "EXCHANGE",
+                    "maxPenaltyAmount": "0.00"
+                  },
+                  {
+                    "category": "REVALIDATION",
+                    "notApplicable": true
+                  }
+                ]
+              }
+            }
+          ],
+          "payments": [
+            {
+              "brand": "VISA_IXARIS",
+              "binNumber": 123456,
+              "flightOfferIds": [
+                1
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "BOSE_FlightOfferUpsellIn_Input": {
+      "title": "FlightOfferUpsell-Input",
+      "type": "object",
+      "description": "input parameter to upsell flight offers element",
+      "required": [
+        "type",
+        "flightOffers"
+      ],
+      "properties": {
+        "type": {
+          "description": "the resource name",
+          "type": "string",
+          "example": "flight-offer-upsell"
+        },
+        "flightOffers": {
+          "description": "list of flight offer to price",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/definitions/BOSE_FlightOffer"
+          }
+        },
+        "payments": {
+          "description": "payment information for retrieve eventual credit card fees",
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/definitions/BOSE_Payment_Input"
+          }
+        }
+      }
+    },
+    "BOSE_Payment_Input": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "$ref": "#/definitions/BOSE_PaymentBrand_Input"
+        },
+        "binNumber": {
+          "description": "The first 6 digits of the credit card",
+          "type": "integer",
+          "example": 123456,
+          "pattern": "[0-9]{6}"
+        },
+        "flightOfferIds": {
+          "description": "Id of the flightOffers to pay",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "type": "string"
+          },
+          "example": "1"
+        }
+      }
+    },
+    "BOSE_PaymentBrand_Input": {
+      "description": "credit card brand",
+      "type": "string",
+      "enum": [
+        "VISA",
+        "AMERICAN_EXPRESS",
+        "MASTERCARD",
+        "VISA_ELECTRON",
+        "VISA_DEBIT",
+        "MASTERCARD_DEBIT",
+        "MAESTRO",
+        "DINERS",
+        "MASTERCARD_IXARIS",
+        "VISA_IXARIS",
+        "MASTERCARD_AIRPLUS",
+        "UATP_AIRPLUS"
+      ],
+      "example": "VISA_IXARIS"
+    }
+  },
+  "responses": {
+    "BOSE_returnUpsell": {
+      "description": "Successful Operation",
+      "schema": {
+        "$ref": "#/definitions/BOSE_Success_Upsell"
+      }
+    },
+    "BOSE_400_Upsell": {
+      "description": "code    | title                                 \n------- | ------------------------------------- \n477     | INVALID FORMAT\n2668    | PARAMETER COMBINATION INVALID/RESTRICTED\n2781    | INVALID LENGTH\n4926    | INVALID DATA RECEIVED\n32171   | MANDATORY DATA MISSING\n39397   | UNABLE TO RETRIEVE UPSELL OFFER\n",
+      "schema": {
+        "$ref": "#/definitions/BOSE_Error_400"
+      }
+    },
+    "BOSE_500": {
+      "description": "Unexpected error",
+      "schema": {
+        "$ref": "#/definitions/BOSE_Error_500"
+      }
+    }
+  },
+  "parameters": {
+    "BOSE_getOverride_Input": {
+      "name": "X-HTTP-Method-Override",
+      "description": "the HTTP method to apply",
+      "required": true,
+      "in": "header",
+      "type": "string",
+      "default": "GET"
+    }
+  },
+  "x-generatedAt": "2023-07-20T11:29:31.660Z"
+}
