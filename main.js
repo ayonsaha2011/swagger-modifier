@@ -76,22 +76,22 @@ const removeUnusedModels = (mainObj, refs) => {
     return mainObj;
 };
 
-const getOpenApiConfig = (refs) => {
-    const openApiConfig = {
-        additionalProperties: {
-            generateAliasAsModel: true,
-            modelDocs: false,
-            apiDocs: false,
-            customNames: {}
+const setOpenApiConfig = async (openApiConfigOutputPath, configMapping) => {
+    try {
+        let openApiConfig = await fs.readJson(openApiConfigOutputPath);
+        if (!openApiConfig || typeof openApiConfig !== 'object') {
+            openApiConfig = {
+                "packageName": "flight-offers-search",
+                "avoidBoxedModels": true,
+            };
         }
-    };
-
-    refs.forEach(ref => {
-        const [, , refName] = ref.split('/');
-        openApiConfig.additionalProperties.customNames[camelize(refName)] = refName;
-    });
-
-    return openApiConfig;
+        if (configMapping.packageName) {
+            openApiConfig.packageName = configMapping.packageName;
+        }
+        await writeJsonToFile(openApiConfigOutputPath, openApiConfig);
+    } catch (error) {
+        console.error('Error reading operation mapping file:', err);
+    }
 };
 const checkAdditionalProperties = (obj) => {
     for (const key in obj) {
@@ -173,6 +173,61 @@ const createNewDefinitionsForObjectAndArrayFields = (mainObj) => {
     return mainObj;
 };
 
+const checkArrayEnums = (mainObj, arrayEnumsKey = []) => {
+    for (const key in mainObj) {
+        if (Object.hasOwnProperty.call(mainObj, key) && mainObj[key].type === 'array' && mainObj[key].items && mainObj[key].items.enum) {
+            arrayEnumsKey.push(key);
+        } else if (typeof mainObj[key] === 'object') {
+            checkArrayEnums(mainObj[key], arrayEnumsKey);
+        } else if (Array.isArray(mainObj[key])) {
+            checkArrayEnums(mainObj[key][0], arrayEnumsKey);
+        }
+    }
+}
+const handleArrayEnums = (mainObj, currentObj, arrayEnumsKey = [], generatedObjects = {}) => {
+    for (const key in currentObj) {
+        if (key === '$ref' && currentObj[key] && currentObj[key].startsWith('#/')) {
+            const [_, refPath, refName] = currentObj[key].split('/');
+            if (arrayEnumsKey.includes(refName)) {
+                if (mainObj[refPath][refName] && mainObj[refPath][refName].items && mainObj[refPath][refName].items.enum) {
+                    currentObj.type = 'array';
+                    currentObj.description = currentObj.description || mainObj[refPath][refName].description || '';
+                    currentObj.minItems = currentObj.minItems || mainObj[refPath][refName].minItems || 0;
+                    currentObj.maxItems = currentObj.maxItems || mainObj[refPath][refName].maxItems || 0;
+                    currentObj.example = currentObj.example || mainObj[refPath][refName].example || [];
+                    const newRefName = `${refName}Enum`;
+                    currentObj.items = { $ref: `#/definitions/${newRefName}` };
+                    mainObj.definitions[`${newRefName}`] = {
+                        type: 'string',
+                        enum: mainObj[refPath][refName].items.enum
+                    };
+                    delete mainObj[refPath][refName];
+                    delete currentObj[key];
+                    generatedObjects[newRefName] = { ...currentObj };
+                } else {
+                    const newRefName = `${refName}Enum`;
+                    if (mainObj[refPath][newRefName] && mainObj[refPath][newRefName].enum && generatedObjects[newRefName]) {
+                        currentObj.type = generatedObjects[newRefName].type;
+                        currentObj.description = generatedObjects[newRefName].description;
+                        currentObj.minItems = generatedObjects[newRefName].minItems;
+                        currentObj.maxItems = generatedObjects[newRefName].maxItems;
+                        currentObj.example = generatedObjects[newRefName].example;
+                        currentObj.items = generatedObjects[newRefName].items;
+                        delete currentObj[key];
+                    }
+                }
+            } else if (typeof mainObj[refPath][refName] === 'object') {
+                handleArrayEnums(mainObj, mainObj[refPath][refName], arrayEnumsKey, generatedObjects);
+            } else if (Array.isArray(mainObj[refPath][refName])) {
+                handleArrayEnums(mainObj, mainObj[refPath][refName][0], arrayEnumsKey, generatedObjects);
+            }
+        } else if (typeof currentObj[key] === 'object') {
+            handleArrayEnums(mainObj, currentObj[key], arrayEnumsKey, generatedObjects);
+        } else if (Array.isArray(currentObj[key])) {
+            handleArrayEnums(mainObj, currentObj[key][0], arrayEnumsKey, generatedObjects);
+        }
+    }
+}
 const modifySwaggerFile = async (inputFilePath, outputFilePath, configMapping, openApiConfigOutputPath) => {
     try {
         let api = await SwaggerParser.bundle(inputFilePath);
@@ -180,6 +235,12 @@ const modifySwaggerFile = async (inputFilePath, outputFilePath, configMapping, o
         checkAdditionalProperties(api.definitions);
         checkAdditionalProperties(api.responses);
         checkAdditionalProperties(api.parameters);
+        const arrayEnumsKey = [];
+        const generatedObjects = {};
+        checkArrayEnums(api, arrayEnumsKey);
+        handleArrayEnums(api, api.responses, arrayEnumsKey, generatedObjects);
+        handleArrayEnums(api, api.parameters, arrayEnumsKey, generatedObjects);
+        handleArrayEnums(api, api.definitions, arrayEnumsKey, generatedObjects);
 
         const refs = [];
         for (const apiPath in api.paths) {
@@ -202,8 +263,7 @@ const modifySwaggerFile = async (inputFilePath, outputFilePath, configMapping, o
         removeUnusedModels(api, refs);
         await writeJsonToFile(outputFilePath, api);
         if (openApiConfigOutputPath) {
-            const openApiConfig = getOpenApiConfig(refs);
-            await writeJsonToFile(openApiConfigOutputPath, openApiConfig);
+            setOpenApiConfig(openApiConfigOutputPath, configMapping);
         }
     } catch (err) {
         console.error('Error modifying Swagger file:', err);

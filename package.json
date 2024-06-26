@@ -1,11 +1,12 @@
 {
   "name": "swagger-modifier",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "",
   "bin": "main.js",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js -i FlightOffersSearch_v2_Version_1.0_swagger_specification.json -o output.json -c config.json",
+    "test": "npm run start"
   },
   "repository": {
     "type": "git",
